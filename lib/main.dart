@@ -1,9 +1,32 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:spotify/core/app_theme.dart';
+import 'package:spotify/firebase_options.dart';
+import 'package:spotify/presentation/bloc/theme_cubit.dart';
 import 'package:spotify/presentation/pages/splash.dart';
+import 'package:spotify/service_locator.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc
+      .storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory(
+            (await getTemporaryDirectory()).path,
+          ),
+  );
+  await Firebase.initializeApp(
+    options:
+        DefaultFirebaseOptions.currentPlatform,
+  );
+  await initializeDependencies();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,25 +35,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      home: const SplashPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ThemeCubit()),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state,
+            debugShowCheckedModeBanner: false,
+            home: const SplashPage(),
+          );
+        },
+      ),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() =>
-      _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }

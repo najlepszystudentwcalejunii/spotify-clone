@@ -7,4 +7,6 @@ class AppImages {
       "$_basePath/choose_mode_background.png";
   static const String authBg =
       "$_basePath/auth_background.png";
+  static const String homePageArtist =
+      "$_basePath/home_page_artist.png";
 }

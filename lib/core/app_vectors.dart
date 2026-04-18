@@ -9,4 +9,6 @@ class AppVectors {
       "$_basePath/pattern_1$_format";
   static const String bottomPattern =
       "$_basePath/pattern_2$_format";
+  static const String homePageCard =
+      "$_basePath/home_page_card$_format";
 }

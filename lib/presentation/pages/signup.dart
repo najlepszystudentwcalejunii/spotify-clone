@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:spotify/core/app_vectors.dart';
 import 'package:spotify/data/models/auth/create_user_request.dart';
 import 'package:spotify/domain/usecases/auth/signup.dart';
-import 'package:spotify/presentation/pages/root.dart';
+import 'package:spotify/presentation/pages/home.dart';
 import 'package:spotify/presentation/pages/signin.dart';
 import 'package:spotify/presentation/widgets/app_bar.dart';
 import 'package:spotify/presentation/widgets/basic_app_button.dart';
@@ -77,7 +77,7 @@ class SignupPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              RootPage(),
+                              HomePage(),
                         ),
                         (route) => false,
                       ),
